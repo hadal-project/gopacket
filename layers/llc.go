@@ -64,6 +64,9 @@ func (l *LLC) NextLayerType() gopacket.LayerType {
 		return LayerTypeSNAP
 	case l.DSAP == 0x42 && l.SSAP == 0x42:
 		return LayerTypeSTP
+	case l.DSAP == 0xfe && l.SSAP == 0xfe:
+		return LayerTypeOSI
+
 	}
 	return gopacket.LayerTypeZero // Not implemented
 }
@@ -71,9 +74,10 @@ func (l *LLC) NextLayerType() gopacket.LayerType {
 // SNAP is used inside LLC.  See
 // http://standards.ieee.org/getieee802/download/802-2001.pdf.
 // From http://en.wikipedia.org/wiki/Subnetwork_Access_Protocol:
-//  "[T]he Subnetwork Access Protocol (SNAP) is a mechanism for multiplexing,
-//  on networks using IEEE 802.2 LLC, more protocols than can be distinguished
-//  by the 8-bit 802.2 Service Access Point (SAP) fields."
+//
+//	"[T]he Subnetwork Access Protocol (SNAP) is a mechanism for multiplexing,
+//	on networks using IEEE 802.2 LLC, more protocols than can be distinguished
+//	by the 8-bit 802.2 Service Access Point (SAP) fields."
 type SNAP struct {
 	BaseLayer
 	OrganizationalCode []byte
